@@ -11,6 +11,8 @@ let links = [
   }
 ];  
 
+let idCount = links.length
+
 const resolvers = {
   Query: {
     info: () => `This is the API of a Hackernews Clone`,
@@ -20,7 +22,18 @@ const resolvers = {
     id: parent => parent.id,
     description: parent => parent.description,
     url: parent => parent.url
-  }
+  }, 
+  Mutation: {
+    post: (parent, args) => {
+      const link = {
+        id: `link-${idCount++}`,
+        url: args.url,
+        description: args.description,
+      }
+      links.push(link)
+      return link
+    }
+  },
 };
 
 const server = new GraphQLServer({
